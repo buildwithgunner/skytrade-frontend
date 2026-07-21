@@ -74,55 +74,20 @@ export default function SiteNav({ activePage, onNavigate, user, onLogout }) {
               );
             })()
           ))}
-          {user?.role === 'admin' && (
-            <button
-              onClick={() => handleNavigate('admin-dashboard')}
-              className={`transition text-cyan-400 hover:text-cyan-300 ${
-                activePage === 'admin-dashboard'
-                  ? 'border-b-2 border-cyan-400 pb-1 -mb-1 font-bold'
-                  : ''
-              }`}
-            >
-              Admin Panel
-            </button>
-          )}
+          {/* WhatsApp contact icon */}
+          <a
+            href="https://wa.me/15753862748"
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Chat with us on WhatsApp"
+            className="flex h-8 w-8 items-center justify-center rounded-full bg-[#25D366] text-white hover:bg-[#20ba5a] transition-colors"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.859-4.407 9.862-9.83.001-2.628-1.02-5.1-2.871-6.953C16.593 1.99 14.12 1.01 11.5 1.01c-5.44 0-9.863 4.41-9.866 9.833-.001 1.762.48 3.487 1.396 4.992l-.995 3.63 3.733-.974zm11.144-7.535c-.328-.163-1.94-.954-2.24-1.063-.3-.11-.518-.163-.737.163-.219.327-.847 1.063-1.038 1.282-.19.217-.382.244-.71.081-1.123-.563-1.92-.93-2.678-2.23-.195-.336.195-.312.558-1.036.06-.12.03-.223-.015-.313-.045-.09-.41-1.01-.563-1.378-.15-.36-.315-.31-.41-.315l-.35-.005c-.246 0-.645.093-.982.463-.337.37-1.287 1.253-1.287 3.052 0 1.8 1.309 3.54 1.49 3.785.183.245 2.57 3.932 6.24 5.51 2.89 1.237 3.48 1.01 4.73 1.01.812 0 1.62-.397 1.848-1.007.228-.61.228-1.137.16-1.246-.07-.11-.257-.163-.585-.327z"/></svg>
+          </a>
         </div>
 
         {/* Desktop right-side actions */}
         <div className="hidden items-center gap-3 text-sm font-bold md:flex">
-          {user ? (
-            <div className="flex items-center gap-4">
-              <div className="hidden flex-col items-end text-right sm:flex">
-                <span className="text-sm font-bold text-white leading-tight">{user.name}</span>
-                <span className="text-[10px] font-extrabold uppercase tracking-wider text-cyan-400/80">
-                  {user.role === 'admin'
-                    ? `Admin (${user.staff_id || 'Staff'})`
-                    : user.account_type || 'Investor'}
-                </span>
-              </div>
-              <button
-                onClick={onLogout}
-                className="rounded-sm border border-white/10 bg-white/5 px-4 py-2 text-white/80 transition hover:border-rose-400/40 hover:bg-rose-950/20 hover:text-rose-200"
-              >
-                Logout
-              </button>
-            </div>
-          ) : (
-            <>
-              <button
-                onClick={() => handleNavigate('user-login')}
-                className="rounded-sm border border-white/15 px-4 py-2 text-white/80 transition hover:border-cyan-400/40 hover:text-white"
-              >
-                Login
-              </button>
-              <button
-                onClick={() => handleNavigate('user-signup')}
-                className="rounded-sm bg-cyan-500 px-4 py-2 text-white font-extrabold shadow-[0_0_24px_rgba(6,182,212,.3)] transition hover:bg-cyan-400"
-              >
-                Sign Up
-              </button>
-            </>
-          )}
         </div>
 
         {/* Mobile hamburger */}

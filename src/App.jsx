@@ -7,6 +7,7 @@ import ClientsPage from './pages/ClientsPage';
 import AuthPage from './pages/AuthPage';
 import AdminDashboardPage from './pages/AdminDashboardPage';
 import UserDashboardPage from './pages/UserDashboardPage';
+import WhatsAppButton from './components/SupportChat';
 import { getSiteContent, getToken, clearToken, apiRequest, TOKEN_KEY } from './lib/api';
 
 const publicPages = new Set(['home', 'performance', 'clients']);
@@ -283,6 +284,7 @@ export default function App() {
       <BackendStatus loading={contentStatus.loading} error={contentStatus.error} />
       {content}
       {isPublicPage && <Footer onNavigate={setPage} />}
+      {user && user.role === 'user' && <WhatsAppButton />}
     </div>
   );
 }

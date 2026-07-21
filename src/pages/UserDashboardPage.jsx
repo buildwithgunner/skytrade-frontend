@@ -5,6 +5,7 @@ import {
   markUserNotificationRead,
   uploadUserDocument,
 } from '../lib/api';
+import WhatsAppButton from '../components/SupportChat';
 
 /* ─── Helpers ─── */
 function fmt(value) {
@@ -526,6 +527,7 @@ export default function UserDashboardPage({ user }) {
           )}
         </div>
       </main>
+        {user && user.role === 'user' && <WhatsAppButton />}
     </div>
   );
 }

@@ -276,4 +276,3 @@ export function resendUserOtp(challenge_token) {
     body: JSON.stringify({ challenge_token }),
   });
 }
-
