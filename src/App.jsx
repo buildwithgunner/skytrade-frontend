@@ -8,7 +8,7 @@ import AuthPage from './pages/AuthPage';
 import AdminDashboardPage from './pages/AdminDashboardPage';
 import UserDashboardPage from './pages/UserDashboardPage';
 import WhatsAppButton from './components/SupportChat';
-import { getSiteContent, getToken, clearToken, apiRequest, TOKEN_KEY } from './lib/api';
+import { getToken, clearToken, apiRequest, TOKEN_KEY } from './lib/api';
 
 const publicPages = new Set(['home', 'performance', 'clients']);
 
@@ -33,26 +33,6 @@ function Footer({ onNavigate }) {
       </div>
     </footer>
   );
-}
-
-function BackendStatus({ loading, error }) {
-  if (loading) {
-    return (
-      <div className="fixed bottom-4 right-4 z-50 border border-cyan-500/20 bg-[#070f1a]/90 backdrop-blur-sm px-4 py-3 text-xs font-bold text-white/70 rounded-sm">
-        Loading backend content...
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="fixed bottom-4 right-4 z-50 max-w-xs border border-rose-300/30 bg-rose-950/80 px-4 py-3 text-xs font-bold text-rose-100 rounded-sm">
-        Backend unavailable: {error}
-      </div>
-    );
-  }
-
-  return null;
 }
 
 // URL path → internal page key
@@ -92,8 +72,6 @@ function pathToPage(pathname) {
 
 export default function App() {
   const [page, setPageState] = useState(() => pathToPage(window.location.pathname));
-  const [siteContent, setSiteContent] = useState(null);
-  const [contentStatus, setContentStatus] = useState({ loading: true, error: '' });
   const [user, setUser] = useState(null);
   const [authLoading, setAuthLoading] = useState(false);
 
@@ -111,25 +89,6 @@ export default function App() {
     };
     window.addEventListener('popstate', onPopState);
     return () => window.removeEventListener('popstate', onPopState);
-  }, []);
-
-  useEffect(() => {
-    let ignore = false;
-
-    getSiteContent()
-      .then((data) => {
-        if (!ignore) {
-          setSiteContent(data);
-          setContentStatus({ loading: false, error: '' });
-        }
-      })
-      .catch((error) => {
-        if (!ignore) setContentStatus({ loading: false, error: error.message });
-      });
-
-    return () => {
-      ignore = true;
-    };
   }, []);
 
   useEffect(() => {
@@ -231,10 +190,10 @@ export default function App() {
   const isAuthPage = !!authMatch;
 
   let content;
-  if (page === 'performance') content = <PerformancePage content={siteContent} />;
-  else if (page === 'platform') content = <PlatformPage content={siteContent} user={user} />;
+  if (page === 'performance') content = <PerformancePage content={null} />;
+  else if (page === 'platform') content = <PlatformPage content={null} user={user} />;
   else if (page === 'user-dashboard') content = <UserDashboardPage user={user} />;
-  else if (page === 'clients') content = <ClientsPage content={siteContent} />;
+  else if (page === 'clients') content = <ClientsPage content={null} />;
   else if (page === 'admin-dashboard') content = <AdminDashboardPage user={user} />;
   else if (authMatch) {
     content = (
@@ -253,7 +212,7 @@ export default function App() {
       />
     );
   } else {
-    content = <LandingPage content={siteContent} onNavigate={setPage} />;
+    content = <LandingPage content={null} onNavigate={setPage} />;
   }
 
   if (authLoading) {
@@ -281,7 +240,6 @@ export default function App() {
       )}
       {!isAuthPage && <SiteNav activePage={page} onNavigate={setPage} user={user} onLogout={handleLogout} />}
       {isAuthPage && <SiteNav activePage="" onNavigate={setPage} user={user} onLogout={handleLogout} />}
-      <BackendStatus loading={contentStatus.loading} error={contentStatus.error} />
       {content}
       {isPublicPage && <Footer onNavigate={setPage} />}
       {user && user.role === 'user' && <WhatsAppButton />}
