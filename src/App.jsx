@@ -14,21 +14,21 @@ const publicPages = new Set(['home', 'performance', 'clients']);
 
 function Footer({ onNavigate }) {
   return (
-    <footer className="relative z-10 border-t border-cyan-500/15 bg-[#050e1a]/80 backdrop-blur-sm px-5 py-8 text-xs text-white/50 sm:px-8 lg:px-12">
+    <footer className="relative z-10 border-t border-white/[0.08] bg-[#07090e]/90 backdrop-blur-xl px-5 py-8 text-xs text-slate-400 sm:px-8 lg:px-12">
       <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-5">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2.5">
           {/* Mini brand mark */}
-          <span className="grid h-6 w-6 place-items-center rounded-sm bg-cyan-500/20">
-            <span className="h-3 w-3 rotate-45 rounded-sm bg-gradient-to-br from-cyan-300 via-cyan-500 to-blue-600" />
+          <span className="grid h-6 w-6 place-items-center rounded-lg bg-emerald-500/15 border border-emerald-500/30">
+            <span className="h-3 w-3 rotate-45 rounded-sm bg-gradient-to-br from-emerald-300 to-teal-700" />
           </span>
-          <span className="font-bold text-white/60">Skytrade</span>
-          <span className="ml-2">&copy; 2026. All rights reserved.</span>
+          <span className="font-bold text-white">Skytrade</span>
+          <span className="ml-2 text-slate-500">&copy; 2026. All rights reserved.</span>
         </div>
-        <div className="flex flex-wrap gap-6 underline underline-offset-4">
-          <button onClick={() => onNavigate('home')}>Privacy Policy</button>
-          <button onClick={() => onNavigate('home')}>Terms of Use</button>
-          <button onClick={() => onNavigate('home')}>Risk Disclosure</button>
-          <button onClick={() => onNavigate('admin-login')} className="text-cyan-400/60 hover:text-cyan-400 no-underline transition">Admin</button>
+        <div className="flex flex-wrap gap-6 text-slate-400">
+          <button onClick={() => onNavigate('home')} className="hover:text-white transition">Privacy Policy</button>
+          <button onClick={() => onNavigate('home')} className="hover:text-white transition">Terms of Use</button>
+          <button onClick={() => onNavigate('home')} className="hover:text-white transition">Risk Disclosure</button>
+          <button onClick={() => onNavigate('admin-login')} className="text-emerald-400/70 hover:text-emerald-400 transition font-medium">Admin</button>
         </div>
       </div>
     </footer>
@@ -190,10 +190,10 @@ export default function App() {
   const isAuthPage = !!authMatch;
 
   let content;
-  if (page === 'performance') content = <PerformancePage content={null} />;
-  else if (page === 'platform') content = <PlatformPage content={null} user={user} />;
+  if (page === 'performance') content = <PerformancePage content={null} onNavigate={setPage} />;
+  else if (page === 'platform') content = <PlatformPage content={null} user={user} onNavigate={setPage} />;
   else if (page === 'user-dashboard') content = <UserDashboardPage user={user} />;
-  else if (page === 'clients') content = <ClientsPage content={null} />;
+  else if (page === 'clients') content = <ClientsPage content={null} onNavigate={setPage} />;
   else if (page === 'admin-dashboard') content = <AdminDashboardPage user={user} />;
   else if (authMatch) {
     content = (
@@ -217,19 +217,19 @@ export default function App() {
 
   if (authLoading) {
     return (
-      <div className="grid min-h-screen place-items-center bg-[#050e1a] text-white">
+      <div className="grid min-h-screen place-items-center bg-[#07090e] text-white">
         <div className="flex flex-col items-center gap-4">
-          <div className="grid h-12 w-12 place-items-center rounded-sm bg-cyan-500/20 shadow-[0_0_28px_rgba(6,182,212,.4)] animate-pulse">
-            <span className="h-6 w-6 rotate-45 rounded-sm bg-gradient-to-br from-cyan-300 via-cyan-500 to-blue-600" />
+          <div className="grid h-12 w-12 place-items-center rounded-xl bg-emerald-500/15 border border-emerald-500/30 shadow-[0_0_28px_rgba(34,197,94,.4)] animate-pulse">
+            <span className="h-6 w-6 rotate-45 rounded-sm bg-gradient-to-br from-emerald-300 via-emerald-500 to-teal-700" />
           </div>
-          <span className="text-sm font-medium text-white/50 tracking-wider">Verifying session...</span>
+          <span className="text-sm font-medium text-slate-400 tracking-wider">Verifying session...</span>
         </div>
       </div>
     );
   }
 
   return (
-    <div className={`min-h-screen overflow-hidden text-white selection:bg-cyan-500/30 ${(isAuthPage || page === 'home') ? '' : 'bg-[#050e1a]'}`}>
+    <div className={`min-h-screen overflow-hidden text-white selection:bg-emerald-500/30 selection:text-emerald-200 ${(isAuthPage || page === 'home') ? 'bg-[#06080e]' : 'bg-[#07090e]'}`}>
       {/* Background glows – only on inner non-auth pages */}
       {!isAuthPage && page !== 'home' && (
         <div className="pointer-events-none fixed inset-0 opacity-60">
@@ -241,7 +241,7 @@ export default function App() {
       {!isAuthPage && <SiteNav activePage={page} onNavigate={setPage} user={user} onLogout={handleLogout} />}
       {isAuthPage && <SiteNav activePage="" onNavigate={setPage} user={user} onLogout={handleLogout} />}
       {content}
-      {isPublicPage && <Footer onNavigate={setPage} />}
+      {isPublicPage && page !== 'home' && <Footer onNavigate={setPage} />}
       {user && user.role === 'user' && <WhatsAppButton />}
     </div>
   );
